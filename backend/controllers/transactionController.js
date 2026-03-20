@@ -1,4 +1,6 @@
-import Transaction from '../models/Transaction.js';
+import Transaction from '../models/transaction.model.js';
+
+console.log("transaction Controller hit");
 
 
 // 1. Add Transaction
@@ -7,7 +9,7 @@ export const addTransaction = async (req, res) => {
         const { user,title, amount, category, type, date } = req.body;
 
         const transaction = new Transaction({
-            user: req.user._id, // Assuming user is authenticated and user info is in req.user
+            user: req.user.id, // Assuming user is authenticated and user info is in req.user
             title,
             amount,
             category,
