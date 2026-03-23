@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import './App.css'
+import Signup from './pages/Auth/Signup'
+import Login from './pages/Auth/Login'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-500">
-        Tailwind Setup Works!
-      </h1>
-    </div>
+      <Login/>
     </>
   )
 }

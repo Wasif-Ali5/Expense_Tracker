@@ -1,5 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=League+Spartan:wght@100..900&display=swap');
 
-body{
-    font-family: 'Poppins' , sans-serif;
+
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  @apply bg-gray-900 text-white font-sans;
+}
+
+/* Card Style */
+.card {
+  @apply bg-gray-800 border border-gray-700 rounded-2xl shadow-lg;
+}
+
+/* Input Style */
+.input {
+  @apply w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500;
+}
+
+/* Primary Button */
+.btn-primary {
+  @apply w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded text-white font-semibold;
+}
+
+/* Success Button */
+.btn-success {
+  @apply w-full bg-green-600 hover:bg-green-700 transition py-3 rounded text-white font-semibold;
+}
+
+/* Danger Button */
+.btn-danger {
+  @apply w-full bg-red-600 hover:bg-red-700 transition py-3 rounded text-white font-semibold;
 }
