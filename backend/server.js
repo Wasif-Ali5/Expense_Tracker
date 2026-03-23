@@ -9,7 +9,15 @@ import userRoutes from "./routes/userRoutes.js";
 
 app.use((req, res, next) => {
     console.log("Incoming request:", req.method, req.url);
+    console.log("BODY:", req.body);
     next();
+});
+
+app.use((req, res, next) => {
+  if (req.body === undefined) {
+    return res.status(400).json({ message: "Request body missing or invalid JSON" });
+  }
+  next();
 });
 
 app.get("/", (req, res) => {
@@ -27,6 +35,12 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/users", userRoutes);
 console.log("Routes loaded..."); 
 connectDB();
+
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err);
+  res.status(500).json({ message: "Server error", error: err.message });
+});
+
 
 const PORT = process.env.PORT || 3000;
 

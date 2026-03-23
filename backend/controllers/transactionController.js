@@ -33,18 +33,47 @@ export const addTransaction = async (req, res) => {
 };
 
 
-// 2. Get All Transactions
 export const getTransactions = async (req, res) => {
-    try {
-        const transactions = await Transaction.find();
+  try {
+    const { type, category, sort, order } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-        res.status(200).json(transactions);
-
-    } catch (error) {
-        res.status(500).json({
-            message: "Error fetching transactions"
-        });
+    // Build query
+    const query = { user: req.user.id };
+    if (type){
+        query.type = type;
     }
+    if (category){
+         query.category = category;
+    }
+
+    // Build sort
+    const sortBy = {};
+    if (sort) sortBy[sort] = order === "desc" ? -1 : 1;
+    else{
+        sortBy.date = -1; // default sort by date descending
+    }
+
+    const total = await Transaction.countDocuments(query);
+    const transactions = await Transaction.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort(sortBy);
+
+    res.status(200).json({
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      data: transactions
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching transactions"
+    });
+  }
 };
 
 
@@ -53,7 +82,18 @@ export const deleteTransaction = async (req, res) => {
     try {
         const { id } = req.params;
 
-        await Transaction.findByIdAndDelete(id);
+        const transaction = await Transaction.findOne({
+                  _id: id,
+                user: req.user.id
+        });
+
+        if(!transaction) {
+            return res.status(404).json({
+            message: "Transaction not found or not authorized"
+        });
+        }
+
+        await transaction.deleteOne();
 
         res.status(200).json({
             message: "Transaction deleted successfully"
@@ -72,11 +112,30 @@ export const updateTransaction = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const updated = await Transaction.findByIdAndUpdate(
-            id,
-            req.body,
-            { new: true }
-        );
+        const transaction = await Transaction.findOne({
+                _id: id,
+                user: req.user.id
+        });
+
+        if(!transaction) {
+            return res.status(404).json({
+            message: "Transaction not found or not authorized"
+        });
+        }
+
+                     //update fields
+        transaction.title = req.body.title || transaction.title;
+        transaction.amount = req.body.amount || transaction.amount;
+        transaction.category = req.body.category || transaction.category;
+        transaction.type = req.body.type || transaction.type;
+        transaction.date = req.body.date || transaction.date;
+
+        await transaction.save();
+
+        res.status(200).json({
+            message: "Transaction updated successfully",
+            data: transaction
+        });
 
         res.status(200).json(updated);
 
