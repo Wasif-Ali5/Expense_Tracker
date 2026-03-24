@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -9,6 +14,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState([]);
 
+  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,19 +22,34 @@ const Login = () => {
     });
   };
 
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", formData);
+      const res = await API.post("/users/login", formData);
 
-      localStorage.setItem("token", res.data.token);
+      // Save token in context + localStorage
+      login(res.data.token);
+
+      setErrors([]);
 
       alert("Login Successful");
-      setErrors([]);
+
+      // Redirect to dashboard
+      navigate("/");
+
     } catch (error) {
-      if (error.response && error.response.data.errors) {
+      if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
+      } else {
+        setErrors([
+          {
+            msg:
+              error.response?.data?.message ||
+              "Invalid email or password",
+          },
+        ]);
       }
     }
   };
@@ -57,6 +78,7 @@ const Login = () => {
           name="email"
           placeholder="Email"
           onChange={handleChange}
+          required
           className="w-full mb-3 p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500"
         />
 
@@ -65,15 +87,25 @@ const Login = () => {
           name="password"
           placeholder="Password"
           onChange={handleChange}
+          required
           className="w-full mb-5 p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500"
         />
 
-        <button className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded text-white font-semibold">
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded text-white font-semibold"
+        >
           Login
         </button>
 
         <p className="text-gray-400 text-sm text-center mt-4">
-          Don't have an account? <span className="text-blue-500">Signup</span>
+          Don't have an account?{" "}
+          <span
+            onClick={() => navigate("/signup")}
+            className="text-blue-500 cursor-pointer"
+          >
+            Signup
+          </span>
         </p>
       </form>
     </div>

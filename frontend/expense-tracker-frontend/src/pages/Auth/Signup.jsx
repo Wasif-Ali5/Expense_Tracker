@@ -21,19 +21,26 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      await API.post("/auth/register", formData);
+      await API.post("/users/register", formData); // ✅ FIXED
+
       alert("Signup Successful");
       setErrors([]);
+
     } catch (error) {
-      if (error.response && error.response.data.errors) {
+      if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
+      } else {
+        setErrors([{ msg: error.response?.data?.message || "Something went wrong" }]);
       }
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <form className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-sm border border-gray-700">
+      <form
+        onSubmit={handleSubmit} // ✅ IMPORTANT
+        className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-sm border border-gray-700"
+      >
         <h2 className="text-3xl font-bold mb-6 text-center text-white">
           Create Account 🚀
         </h2>
@@ -71,7 +78,7 @@ const Signup = () => {
         />
 
         <button
-          onClick={handleSubmit}
+          type="submit"
           className="w-full bg-green-600 hover:bg-green-700 transition py-3 rounded text-white font-semibold"
         >
           Signup
