@@ -4,8 +4,8 @@ import PrivateRoute from "../components/PrivateRoute";
 
 const Login = lazy(() => import("../pages/Auth/Login.jsx"));
 const Signup = lazy(() => import("../pages/Auth/Signup.jsx"));
-const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard.jsx"));
-const AddTransaction = lazy(() => import("../pages/Transaction/AddTransaction.jsx"));
+//const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard.jsx"));
+//const AddTransaction = lazy(() => import("../pages/Transaction/AddTransaction.jsx"));
 
 const AppRoutes = () => {
   return (
@@ -14,24 +14,6 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/add"
-            element={
-              <PrivateRoute>
-                <AddTransaction />
-              </PrivateRoute>
-            }
-          />
-
         </Routes>
       </Suspense>
     </BrowserRouter>

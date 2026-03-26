@@ -14,7 +14,6 @@ const Login = () => {
 
   const [errors, setErrors] = useState([]);
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -22,21 +21,18 @@ const Login = () => {
     });
   };
 
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const res = await API.post("/users/login", formData);
 
-      // Save token in context + localStorage
       login(res.data.token);
 
       setErrors([]);
 
-      alert("Login Successful");
+      alert("Login Successfully");
 
-      // Redirect to dashboard
       navigate("/");
 
     } catch (error) {
@@ -64,7 +60,6 @@ const Login = () => {
           Welcome Back 👋
         </h2>
 
-        {/* Errors */}
         {errors.length > 0 && (
           <div className="mb-4 text-red-400 text-sm">
             {errors.map((err, i) => (
@@ -93,7 +88,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded text-white font-semibold"
+          className="w-full  bg-green-600 hover:bg-green-700 transition py-3 rounded text-white font-semibold"
         >
           Login
         </button>
@@ -102,7 +97,7 @@ const Login = () => {
           Don't have an account?{" "}
           <span
             onClick={() => navigate("/signup")}
-            className="text-blue-500 cursor-pointer"
+            className="text-green-500 cursor-pointer"
           >
             Signup
           </span>
