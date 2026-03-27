@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../services/api";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth.js";
+import { loginUser } from "../../services/authService.js";  
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,15 +25,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await API.post("/users/login", formData);
+      const res = await loginUser(formData);
 
-      login(res.data.token);
+      login(res.token);
 
       setErrors([]);
 
       alert("Login Successfully");
 
-      navigate("/");
+      navigate("/dashboard");
 
     } catch (error) {
       if (error.response?.data?.errors) {

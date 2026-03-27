@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../../services/api";
+import { registerUser } from "../../services/authService.js";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -21,28 +21,30 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      await API.post("/users/register", formData);
+        const res = await registerUser(formData);
 
-      alert(res.data.message ||  "Signup Successfully");
-      setErrors([]);
+        alert(res.data.message || "User registered successfully");
 
-      } catch (error) {
-    console.log(error.response);
+        setErrors([]); 
+        setFormData({
+          name: "",
+          email: "",
+          password: ""
+        });
 
-    if (error.response) {
-      if (error.response.data.errors) {
-        setErrors(error.response.data.errors);
+    }catch (error) {
+        console.log(error.response?.data);
 
-      } else if (error.response.data.message) {
-        setErrors([{ msg: error.response.data.message }]);
+        if (error.response?.data?.errors) {
+          setErrors(error.response.data.errors);
 
-      } else {
-        setErrors([{ msg: "Something went wrong" }]);
+        } else if (error.response?.data?.message) {
+          setErrors([{ msg: error.response.data.message }]);
+
+        } else {
+          setErrors([{ msg: "Server not reachable" }]);
+        }
       }
-    } else {
-      setErrors([{ msg: "Server not reachable" }]);
-    }
-  }
   };
 
   return (
