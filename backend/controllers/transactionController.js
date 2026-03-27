@@ -40,8 +40,11 @@ export const getTransactions = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // Build query
-    const query = { user: req.user.id };
+    const userId = req.user.userId || req.user.id;
+     if (!userId) {
+      return res.status(401).json({ message: "User not found in token" });
+    }
+    const query = { user: userId };
     if (type){
         query.type = type;
     }
@@ -136,8 +139,6 @@ export const updateTransaction = async (req, res) => {
             message: "Transaction updated successfully",
             data: transaction
         });
-
-        res.status(200).json(updated);
 
     } catch (error) {
         res.status(500).json({
