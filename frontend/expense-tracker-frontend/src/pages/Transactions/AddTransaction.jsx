@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {transactionService} from "../../services/transactionService.js";
+import transactionService from "../../services/transactionService.js";
 
 const AddTransaction = () => {
   const navigate = useNavigate();

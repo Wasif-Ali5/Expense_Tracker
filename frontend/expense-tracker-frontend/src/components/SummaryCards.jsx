@@ -2,41 +2,64 @@ import { motion } from "framer-motion";
 
 const SummaryCards = ({ transactions }) => {
   const income = transactions
-    .filter(t => t.type === "income")
+    .filter((t) => t.type === "income")
     .reduce((acc, t) => acc + t.amount, 0);
 
   const expense = transactions
-    .filter(t => t.type === "expense")
+    .filter((t) => t.type === "expense")
     .reduce((acc, t) => acc + t.amount, 0);
 
   const balance = income - expense;
 
   return (
-    <div className="grid md:grid-cols-3 gap-4 mb-6">
-      <Card title="Balance" amount={balance} color="blue" />
-      <Card title="Income" amount={income} color="green" />
-      <Card title="Expense" amount={expense} color="red" />
+    <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <Card
+        title="Income"
+        amount={income}
+        color="from-green-500 to-green-700"
+        percent={income ? 100 : 0}
+      />
+
+      <Card
+        title="Expense"
+        amount={expense}
+        color="from-red-500 to-red-700"
+        percent={expense ? 100 : 0}
+      />
+
+      <Card
+        title="Balance"
+        amount={balance}
+        color="from-blue-500 to-purple-600"
+        percent={balance > 0 ? 100 : 50}
+      />
     </div>
   );
 };
 
-const Card = ({ title, amount, color }) => {
-  const colorClasses = {
-    blue: "text-blue-400",
-    green: "text-green-400",
-    red: "text-red-400",
-  };
-
+const Card = ({ title, amount, color, percent }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="bg-gray-800 p-5 rounded-xl shadow-md transition"
+      className={`p-6 rounded-2xl bg-gradient-to-r ${color} shadow-lg`}
     >
-      <h2 className="text-gray-400">{title}</h2>
+      <h2 className="text-sm opacity-80">{title}</h2>
 
-      <p className={`text-2xl font-bold ${colorClasses[color]}`}>
-        Rs {amount}
-      </p>
+      <div className="flex items-center justify-between mt-3">
+
+        {/* Amount */}
+        <p className="text-2xl font-bold">
+          Rs {amount}
+        </p>
+
+        {/* Circular Progress */}
+        <div className="w-16 h-16 rounded-full border-4 border-white/20 flex items-center justify-center">
+          <span className="text-sm font-semibold">
+            {percent}%
+          </span>
+        </div>
+
+      </div>
     </motion.div>
   );
 };

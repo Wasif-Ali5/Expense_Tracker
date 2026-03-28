@@ -26,14 +26,14 @@ const Login = () => {
 
     try {
       const res = await loginUser(formData);
-
-      login(res.token);
-
+      console.log(res);
+      login(res);
       setErrors([]);
-
       alert("Login Successfully");
-
-      navigate("/dashboard");
+      setTimeout(() => {
+        console.log("Navigating to dashboard...");
+        navigate("/dashboard");
+      }, 100);
 
     } catch (error) {
       if (error.response?.data?.errors) {

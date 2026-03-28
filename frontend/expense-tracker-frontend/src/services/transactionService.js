@@ -1,4 +1,4 @@
-import API from "./api";
+import API from "./api.js";
 
 const addTransaction = async (data) => {
   const res = await API.post("/transactions/add", data);

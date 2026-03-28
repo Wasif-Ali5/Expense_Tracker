@@ -7,12 +7,6 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   const res = await API.post("/users/login", userData);
-
-  if (res.data.token) {
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user)); 
-  }
-
   return res.data;
 };
 

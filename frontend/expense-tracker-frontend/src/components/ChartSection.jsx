@@ -1,36 +1,34 @@
 import {
-  PieChart, Pie, Cell, Tooltip, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 
 const ChartSection = ({ transactions }) => {
-  const income = transactions
-    .filter(t => t.type === "income")
-    .reduce((a, t) => a + t.amount, 0);
-
-  const expense = transactions
-    .filter(t => t.type === "expense")
-    .reduce((a, t) => a + t.amount, 0);
-
-  const data = [
-    { name: "Income", value: income },
-    { name: "Expense", value: expense },
-  ];
-
-  const COLORS = ["#22c55e", "#ef4444"];
+  // Fake monthly grouping (simple version)
+  const data = transactions.slice(0, 6).map((t, i) => ({
+    name: `T${i + 1}`,
+    amount: t.amount,
+  }));
 
   return (
-    <div className="bg-gray-800 p-6 rounded-xl mb-6">
-      <h2 className="mb-4 text-lg font-semibold">Overview</h2>
+    <div className="bg-[#1e293b] p-6 rounded-2xl mb-8 shadow-lg">
+      <h2 className="text-lg font-semibold mb-4">Analytics</h2>
 
       <ResponsiveContainer width="100%" height={250}>
-        <PieChart>
-          <Pie data={data} dataKey="value" outerRadius={80}>
-            {data.map((entry, index) => (
-              <Cell key={index} fill={COLORS[index]} />
-            ))}
-          </Pie>
+        <LineChart data={data}>
+          <XAxis dataKey="name" stroke="#aaa" />
           <Tooltip />
-        </PieChart>
+          <Line
+            type="monotone"
+            dataKey="amount"
+            stroke="#8b5cf6"
+            strokeWidth={3}
+            dot={{ r: 4 }}
+          />
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

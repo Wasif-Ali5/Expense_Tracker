@@ -7,9 +7,15 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    console.log(localStorage.getItem("user"))
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      if (storedUser && storedUser !== "undefined") {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (err) {
+        console.error("Invalid user in localStorage");
+        localStorage.removeItem("user");
+      }
     }
   }, []);
 
