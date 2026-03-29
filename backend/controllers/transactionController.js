@@ -40,7 +40,7 @@ export const getTransactions = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.id;
      if (!userId) {
       return res.status(401).json({ message: "User not found in token" });
     }
