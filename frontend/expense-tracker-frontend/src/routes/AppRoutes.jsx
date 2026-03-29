@@ -6,6 +6,10 @@ const Login = lazy(() => import("../pages/Auth/Login.jsx"));
 const Signup = lazy(() => import("../pages/Auth/Signup.jsx"));
 const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard.jsx"));
 const AddTransaction = lazy(() => import("../pages/Transactions/AddTransaction.jsx"));
+const EditTransaction = lazy(() => import("../components/EditTransaction.jsx"));
+const AllTransactions = lazy(() => import("../pages/Transactions/AllTransactions.jsx"));
+
+
 
 const AppRoutes = () => {
   return (
@@ -41,8 +45,24 @@ const AppRoutes = () => {
             }
           />
 
+          <Route
+            path="/edit-transaction/:id"
+            element={
+              <PrivateRoute>
+                <EditTransaction />
+              </PrivateRoute>
+            }
+          />
 
-          {/* Default */}
+          <Route
+            path="/transactions"
+            element={
+                  <PrivateRoute>
+                    <AllTransactions />
+                  </PrivateRoute>
+                }
+          />
+                        {/* Default */}
           <Route path="*" element={<Navigate to="/login" />} />
 
         </Routes>
