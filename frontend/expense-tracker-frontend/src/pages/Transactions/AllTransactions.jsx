@@ -30,8 +30,9 @@ const AllTransactions = () => {
     fetchAll();
   }, []);
 
-  const downloadPDF = () => {
+const downloadPDF = () => {
     const doc = new jsPDF();
+
     const tableColumn = ["Date", "Description", "Category", "Type", "Amount"];
     const tableRows = transactions.map(t => [
         new Date(t.date).toLocaleDateString(),
@@ -51,8 +52,9 @@ const AllTransactions = () => {
 
     const dateStamp = new Date().toISOString().split('T')[0];
     const fileName = `${user?.name || user?.username || "User"}_Transactions_${dateStamp}.pdf`;
+    
     doc.save(fileName);
-  };
+};
 
   return (
     <div className="bg-[#0f172a] min-h-screen text-white pb-12">

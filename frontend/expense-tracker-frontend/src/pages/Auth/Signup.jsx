@@ -25,8 +25,15 @@ const Signup = () => {
       await registerUser(formData);
       setSuccess(true);
       setTimeout(() => navigate("/login"), 2000);
-    } catch (error) {
-      const errorMsg = error.response?.data?.message || "Server not reachable";
+   } catch (error) {
+      console.log("Full Error Object:", error.response); // Debugging line
+      
+      // Check if it's a validation array (common in express-validator) or a single message
+      const errorMsg = 
+        error.response?.data?.errors?.[0]?.msg || 
+        error.response?.data?.message || 
+        "An unexpected error occurred";
+        
       setErrors([{ msg: errorMsg }]);
     } finally {
       setLoading(false);

@@ -79,19 +79,21 @@ const AddTransaction = () => {
             />
           </div>
 
-          {/* Amount */}
-          <div>
-            <label className="text-[10px] uppercase font-bold text-gray-500 ml-1 tracking-widest">Amount (Rs)</label>
-            <input
-              type="number"
-              name="amount"
-              placeholder="0.00"
-              value={formData.amount}
-              onChange={handleChange}
-              className="w-full mt-1 p-4 rounded-xl bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-600"
-              required
-            />
-          </div>
+                  {/* Amount */}
+        <div>
+          <label className="text-[10px] uppercase font-bold text-gray-500 ml-1 tracking-widest">Amount (Rs)</label>
+          <input
+            type="number"
+            name="amount"
+            placeholder="0.00"
+            min="0.01" // Prevents 0 or negative via UI
+            step="0.01"
+            value={formData.amount}
+            onChange={handleChange}
+            className="w-full mt-1 p-4 rounded-xl bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-600"
+            required
+          />
+        </div>
 
           {/* Category */}
           <div>

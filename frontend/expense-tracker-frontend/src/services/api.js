@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// If the environment variable exists (Vercel), use it.
+// If not (Local Dev), use "/api" so the Vite Proxy handles it.
+const baseURL = import.meta.env.VITE_API_URL || "/api";
+
 const API = axios.create({
-  baseURL: "/api",
+  baseURL: baseURL,
 });
 
 // Attach token automatically
