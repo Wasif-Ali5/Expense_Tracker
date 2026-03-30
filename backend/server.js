@@ -1,11 +1,28 @@
 import express from "express";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
+import cors from "cors";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:4000",
+];
+
+app.use(cors({
+   origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 
 // 1. Core Middleware
 app.use(express.json());
