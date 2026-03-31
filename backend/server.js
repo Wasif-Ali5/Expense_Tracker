@@ -10,7 +10,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:4000",
-  "http://expense-tracker-frontend-mauve-five.vercel.app"
+  "https://expense-tracker-frontend-mauve-five.vercel.app"
 ];
 
 app.use(cors({
